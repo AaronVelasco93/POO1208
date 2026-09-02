@@ -1,0 +1,15 @@
+        true // false
+while(condicion){
+    //Logina de negocio
+}
+
+
+Estudiante
+Atributos
+Nombre
+Numero de cuenta
+carrera
+semestre 
+promedio 
+metodos
+presentarse
