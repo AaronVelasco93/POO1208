@@ -13,6 +13,7 @@ public class Principal {
         estudiante1.presentarse();
 
     System.out.println("-------------------------------------");
+    
         Estudiante Juan = new Estudiante("juan", "416117203");
         Juan.presentarse();
        
