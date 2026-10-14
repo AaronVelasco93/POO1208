@@ -37,11 +37,87 @@ public class MenuProductos {
     private void ejecutarOpcion(int Opcion){
         switch (Opcion) {
             case 1 -> crearProducto();
-            case 2 -> listarProducto();
+            case 2 -> listarProductos();
             case 3 -> actualizarProducto();
             case 4 -> eliminarProducto();
             case 0 -> System.out.println("Programa Finalizado");
             default -> System.out.println("Opciones no valida");
         }
     }
-}
+    // solicta los datos, construye el modelo y delega el insert al DAO
+    private void crearProducto(){
+        System.out.println("\n --- Nuevo Producto ---");
+        Producto  producto = leerDatosProducto(0);
+
+        if(productoDAO.insertar(producto)){
+            System.out.println("Producto creado con el ID"+producto.getId()+ ".-");
+            
+        }
+
+    }
+
+    // Solicitar al DAO los productos y los presenta en una tabla
+    private void listarProductos(){
+        List<Producto> productos = productoDAO.listar();
+        System.out.println("-- Lista de productos --");
+        if(productos.isEmpty()){
+            System.out.println("No hay productos");
+            return ;
+        }else{
+            System.out.println("----Productos----");
+            System.out.println("ID, Nombre, Precio, Existencias");
+            System.out.println("--------------------------");
+            for(Producto producto : productos){
+
+              System.out.println(producto.getID(),
+              producto.getNombre(),producto.getPrecio(),
+              producto.getExistencia());  
+            }
+        }
+    }
+    private void actualizarProducto(){
+        listarProducto();
+        int id = entrada.leerEnteroPositivo("\n ID del producto que deseas actualizar");
+        Producto  actual = productoDAO.buscarPorID(id);
+
+        if(actual == null){
+            System.out.println("No existe el producto con el ID: "+id);
+            return ;
+        }
+        System.out.println("Escribe los datos que remplazaron los actuales");
+        
+        Producto modificado = leerDatosProducto(id);
+        if(productoDAO.actualizar(modificado)){
+            System.out.println("Producto actualizado correctamente");
+        }
+    }
+    private void eliminarProducto(){
+        listarProductos();
+        int id =  entrada.leerEnteroPositivo("\n ID del producto que desea eliminar");
+        if(productoDAO.buscarPorID(id)== null){
+            System.out.println( "No existe un producto con el ID : "+id);
+            return ;
+        }
+
+        String confirmacion = entrada.leerTexto("Escribe S para confirmar.");
+
+        if(!confirmacion.equalsIgnoreCase("S")){
+            System.out.println("Eliminacion cancelada");
+            return ;
+        }
+        if(productoDAO.eliminar(id)){
+            System.out.println("Producto Eliminado");
+        }
+
+
+    }
+    //reutiliza las mismas preguntas al crear y actualizar un productos
+
+    private Producto leerDatosProducto(int id){
+        String nombre = entrada.leerTextoObligatorio("Nombre");
+        double precio = entrada.leerDecimalNoNegativo("Precio:");
+        int existencias= entrada.leerEntero("Existencias");
+        return new Producto (id, nombre,precio,existencias);
+    }
+
+}//fin de clase
