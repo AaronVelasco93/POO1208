@@ -50,7 +50,7 @@ public class MenuProductos {
         Producto  producto = leerDatosProducto(0);
 
         if(productoDAO.insertar(producto)){
-            System.out.println("Producto creado con el ID"+producto.getId()+ ".-");
+            System.out.println("Producto creado con el ID"+producto.getID()+ ".-");
             
         }
 
@@ -68,15 +68,14 @@ public class MenuProductos {
             System.out.println("ID, Nombre, Precio, Existencias");
             System.out.println("--------------------------");
             for(Producto producto : productos){
-
-              System.out.println(producto.getID(),
-              producto.getNombre(),producto.getPrecio(),
-              producto.getExistencia());  
+              System.out.println(producto.getID()+
+              producto.getNombre()+producto.getPrecio()+
+              producto.getExistencias());  
             }
         }
     }
     private void actualizarProducto(){
-        listarProducto();
+        listarProductos();
         int id = entrada.leerEnteroPositivo("\n ID del producto que deseas actualizar");
         Producto  actual = productoDAO.buscarPorID(id);
 
